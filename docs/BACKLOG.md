@@ -39,7 +39,7 @@
 
 ---
 
-### [ ] TICKET-002: 다크 모드(next-themes) 셋업 및 전역 테마 스타일 정의
+### [x] TICKET-002: 다크 모드(next-themes) 셋업 및 전역 테마 스타일 정의
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-001
@@ -50,8 +50,8 @@
   3. `src/app/globals.css`에 다크/라이트 모드 CSS 변수 및 배경색(`bg-background`), 텍스트색(`text-foreground`), 골드/시안 액센트 컬러 정의
   4. 기본 테마를 `dark`로 설정하여 초기 로딩 시 화면 깜빡임(FOUC) 없이 다크 테마 적용
 - **Acceptance Criteria**:
-  - [ ] 첫 화면 접속 시 다크 모드가 기본으로 렌더링된다.
-  - [ ] Tailwind `dark:` 변형 클래스가 정상 동작한다.
+  - [x] 첫 화면 접속 시 다크 모드가 기본으로 렌더링된다.
+  - [x] Tailwind `dark:` 변형 클래스가 정상 동작한다.
 
 ---
 
