@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/common/theme-provider";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -13,8 +14,15 @@ type RootLayoutProps = {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground antialiased">
-        {children}
+      <body className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
