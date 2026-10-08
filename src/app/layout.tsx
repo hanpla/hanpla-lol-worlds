@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/common/theme-provider";
+import { pretendard } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -13,8 +15,12 @@ type RootLayoutProps = {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html lang="ko" suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+    <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans text-foreground antialiased selection:bg-primary/20 selection:text-primary",
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
