@@ -55,7 +55,7 @@
 
 ---
 
-### [ ] TICKET-003: 환경변수 설정 및 보안 가이드 구축
+### [x] TICKET-003: 환경변수 설정 및 보안 가이드 구축
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-001
@@ -65,8 +65,8 @@
   2. `.env.example` 템플릿 생성
   3. `.gitignore`에 `.env*.local` 및 빌드 아티팩트 등록 확인
 - **Acceptance Criteria**:
-  - [ ] `.env.local`의 환경변수가 Next.js 서버 런타임에서 로드된다.
-  - [ ] API 토큰에 `NEXT_PUBLIC_`이 붙지 않아 클라이언트 번들에 노출되지 않는다.
+  - [x] `.env.local`의 환경변수가 Next.js 서버 런타임에서 로드된다.
+  - [x] API 토큰에 `NEXT_PUBLIC_`이 붙지 않아 클라이언트 번들에 노출되지 않는다.
 
 ---
 
