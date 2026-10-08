@@ -70,6 +70,24 @@
 
 ---
 
+### [x] TICKET-004: Pretendard 폰트 최적화(next/font/local) 적용 및 타이포그래피 시스템 구축
+
+- **우선순위**: P1
+- **선행 의존성**: TICKET-001, TICKET-002
+- **목표**: Next.js 15의 `next/font/local`을 활용하여 Pretendard Variable 웹폰트를 자체 호스팅 및 최적화(Zero CLS, WOFF2 프리로드, `display: 'swap'`)하고 전역 타이포그래피 시스템으로 통합
+- **상세 작업**:
+  1. `public/fonts/` 또는 에셋 디렉터리에 경량화된 `PretendardVariable.woff2` 폰트 파일 배치
+  2. `src/lib/fonts.ts` (또는 `src/app/layout.tsx`)에 `next/font/local` 기반 `pretendard` 폰트 인스턴스 정의 (`variable: '--font-pretendard'`, `display: 'swap'`)
+  3. `tailwind.config.ts`의 `theme.extend.fontFamily`에 `sans: ['var(--font-pretendard)', 'sans-serif']` 설정
+  4. `src/app/layout.tsx`의 `<html>` 또는 `<body>` 태그에 폰트 변수 클래스(`pretendard.variable font-sans`) 바인딩
+- **Acceptance Criteria**:
+  - [x] `next/font/local`을 통해 Pretendard 폰트가 자체 호스팅되어 빌드 타임에 최적화된다.
+  - [x] 폰트 로딩 시 레이아웃 이동(CLS: Cumulative Layout Shift)이 발생하지 않고 깜빡임이 최소화된다.
+  - [x] Tailwind CSS의 기본 `font-sans` 및 전역 텍스트에 Pretendard가 올바르게 적용된다.
+  - [x] `npx tsc --noEmit` 및 `npm run build` 검증을 통과한다.
+
+---
+
 ## 📊 Phase 1: 데이터 모델 및 PandaScore API 계층 (Data & API Layer)
 
 ### [ ] TICKET-101: PandaScore API Zod 스키마 및 TypeScript 타입 정의
