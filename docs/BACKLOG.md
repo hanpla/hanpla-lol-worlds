@@ -90,7 +90,7 @@
 
 ## 📊 Phase 1: 데이터 모델 및 PandaScore API 계층 (Data & API Layer)
 
-### [ ] TICKET-101: PandaScore API Zod 스키마 및 TypeScript 타입 정의
+### [x] TICKET-101: PandaScore API Zod 스키마 및 TypeScript 타입 정의
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-001
@@ -101,8 +101,8 @@
   3. `z.infer`를 활용하여 `Match`, `Tournament`, `Game`, `Opponent`, `Team` 타입 도출 (`type` 별칭 사용)
   4. 일자별 그룹화된 데이터 모델 `GroupedSchedule` 타입 선언
 - **Acceptance Criteria**:
-  - [ ] opponents가 비어있는 케이스(`[]`) 및 TBD 케이스를 안전하게 수용한다.
-  - [ ] `any` 타입이 전혀 사용되지 않고 엄격한 타입 안정성을 제공한다.
+  - [x] opponents가 비어있는 케이스(`[]`) 및 TBD 케이스를 안전하게 수용한다.
+  - [x] `any` 타입이 전혀 사용되지 않고 엄격한 타입 안정성을 제공한다.
 
 ---
 
