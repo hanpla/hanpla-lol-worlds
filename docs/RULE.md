@@ -19,9 +19,10 @@
 4. **Next.js 15 PPR & 5분 캐시 (`revalidate: 300`) 원칙**
    - Server Component 기본, 민감한 API 호출 파일은 `import "server-only";`로 격리합니다.
    - 외부 PandaScore API는 5분 단위 Next.js Data Cache를 엄격히 적용합니다.
-5. **백로그 풀링 준수 및 4단계 검증 후 분할 커밋**
+5. **백로그 풀링 준수 및 4단계 검증 (사용자 요청 시에만 커밋 진행)**
    - `BACKLOG.md`에서 한 번에 1개의 티켓만 풀링하여 작업합니다.
-   - 포맷 $\rightarrow$ 린트 $\rightarrow$ 타입 검사(`tsc --noEmit`) $\rightarrow$ 빌드(`build`) 4단계 검증을 거친 후 논리적 단위로 분할 커밋합니다.
+   - 포맷 $\rightarrow$ 린트 $\rightarrow$ 타입 검사(`tsc --noEmit`) $\rightarrow$ 빌드(`build`) 4단계 검증을 완료한 후 변경 사항을 보고합니다.
+   - **Git 커밋은 임의로 자동 수행하지 않으며, 반드시 사용자가 명시적으로 커밋을 요청했을 때만** 작업 단위별로 분할 커밋(Atomic Commits)을 진행합니다.
 
 ---
 
@@ -47,11 +48,11 @@ flowchart LR
     Step1["1. BACKLOG 확인\n(티켓 선택)"] --> Step2["2. 세부 문서 참조\n(CONVENTIONS/ARCH)"]
     Step2 --> Step3["3. 코드 작성\n(5대 헌장 준수)"]
     Step3 --> Step4["4. 4단계 자체 검증\n(tsc & build)"]
-    Step4 --> Step5["5. 티켓 완료 마킹\n(Atomic Commit)"]
+    Step4 --> Step5["5. 티켓 완료 보고\n(사용자 커밋 요청 시 분할 커밋)"]
 ```
 
 1. **[Pull]**: `docs/BACKLOG.md`에서 이전 의존성이 충족된 `[ ] TODO` 티켓을 찾아 상태를 `[-] IN_PROGRESS`로 변경합니다.
 2. **[Reference]**: 필요에 따라 `docs/CONVENTIONS.md` 또는 `docs/ARCHITECTURE.md`에서 세부 규칙과 데이터 모델을 확인합니다.
 3. **[Implement]**: 5대 핵심 헌장을 준수하여 코드를 작성합니다.
 4. **[Verify]**: 터미널에서 `npx tsc --noEmit` 및 `npm run build`를 실행하여 오류가 0개인지 확인합니다.
-5. **[Done & Commit]**: 티켓 상태를 `[x] DONE`으로 업데이트하고, 작업 단위별로 분할 커밋(Atomic Commits)을 제안하거나 수행합니다.
+5. **[Done & Report]**: 티켓 상태를 `[x] DONE`으로 업데이트하고, 4단계 검증 결과와 변경 내역을 사용자에게 보고합니다. **Git 커밋은 임의로 수행하지 않으며, 반드시 사용자가 명시적으로 커밋을 요청했을 때만** 작업 단위별로 분할 커밋(Atomic Commits)합니다.

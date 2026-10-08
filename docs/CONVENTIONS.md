@@ -126,6 +126,7 @@ import { cn } from "@/lib/utils";
 
 ## 8. Git 커밋 컨벤션 (Atomic Commits)
 
+- **커밋 실행 원칙**: 임의로 자동 커밋하지 않으며, **반드시 사용자의 명시적인 커밋 요청/승인이 있을 때만** 커밋을 진행합니다.
 - 일괄 커밋(`git add .`)을 금지하고 관심사별로 분할 커밋합니다:
   1. 타입/스키마 $\rightarrow$ 2. 로직/유틸 $\rightarrow$ 3. UI 컴포넌트 $\rightarrow$ 4. 문서/설정
 - 형식: `<type>(<scope>): <subject>` (`feat`, `fix`, `refactor`, `style`, `docs`, `test`, `chore`)

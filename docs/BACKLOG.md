@@ -16,7 +16,7 @@
 > 1. 이전 티켓의 선행 조건이 충족되었는지 확인 후 한 번에 하나의 티켓만 `[-] IN_PROGRESS`로 변경합니다.
 > 2. 코드 작성 시 `function` 키워드 대신 `const` 화살표 함수, Named Export, `kebab-case` 파일명을 엄격히 사용합니다.
 > 3. 해당 티켓의 Acceptance Criteria를 모두 검증한 후 `[x] DONE`으로 변경합니다.
-> 4. 커밋 요청 시 `git add .` 일괄 커밋을 지양하고, 작업 단위별로 분할 커밋(Atomic Commits)합니다.
+> 4. **Git 커밋은 임의로 자동 수행하지 않으며, 반드시 사용자가 명시적으로 커밋을 요청했을 때만 진행합니다.** 커밋 시 `git add .` 일괄 커밋을 지양하고 작업 단위별로 분할 커밋(Atomic Commits)합니다.
 
 ---
 
