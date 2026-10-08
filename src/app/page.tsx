@@ -8,9 +8,7 @@ const HomePage = () => {
         <h1 className="mt-3 text-2xl font-bold tracking-tight text-foreground">
           2026 롤드컵 경기 일정
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          대회 일정이 곧 업데이트됩니다.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">대회 일정이 곧 업데이트됩니다.</p>
       </div>
     </main>
   );

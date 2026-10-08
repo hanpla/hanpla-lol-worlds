@@ -85,9 +85,7 @@ import { matchesResponseSchema, type Match } from "@/types/pandascore";
 export const get2026WorldsMatches = async (): Promise<Match[]> => {
   const token = process.env.PANDASCORE_API_TOKEN;
   if (!token) {
-    throw new Error(
-      "PANDASCORE_API_TOKEN is not configured in environment variables",
-    );
+    throw new Error("PANDASCORE_API_TOKEN is not configured in environment variables");
   }
 
   const response = await fetch(
@@ -105,9 +103,7 @@ export const get2026WorldsMatches = async (): Promise<Match[]> => {
   );
 
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch matches: ${response.status} ${response.statusText}`,
-    );
+    throw new Error(`Failed to fetch matches: ${response.status} ${response.statusText}`);
   }
 
   const rawData: unknown = await response.json();
