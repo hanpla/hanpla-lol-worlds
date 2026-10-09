@@ -81,7 +81,7 @@ export const MatchCard = ({ match }: MatchCardProps) => {
 ```tsx
 import { cn } from "@/lib/utils";
 
-<div className={cn("rounded-lg p-4", isActive && "ring-2 ring-primary", className)} />;
+<div className={cn("rounded-lg p-4", isActive && "ring-primary ring-2", className)} />;
 ```
 
 ### 4.2 아이콘 및 이미지 최적화
@@ -104,6 +104,9 @@ import { cn } from "@/lib/utils";
 ## 6. Import 규칙 및 경로 별칭
 
 - **경로 별칭 필수**: 상대 경로 대신 `@/*` 절대 경로 별칭을 일관되게 사용합니다.
+- **배럴 파일(Barrel File) 생성 및 사용 일체 금지**:
+  - 디렉터리 내에 `index.ts`를 두고 하위 모듈을 재수출(`export * from ...`)하는 배럴 패턴을 작성하지 않습니다.
+  - Vercel 성능 모범 규약(`bundle-barrel-imports`)에 따라, 트리 쉐이킹(Tree-shaking) 저해, HMR/빌드 시간 지연, 순환 참조를 방지하기 위해 반드시 원본 파일 경로(`@/constants/teams`, `@/lib/date/kst-date` 등)로 직접 명시적 임포트합니다.
 - **Import 순서**:
   1. React 및 Next.js 패키지 (`react`, `next/...`)
   2. 서드파티 라이브러리 (`lucide-react`, `zod`, `next-themes` 등)
