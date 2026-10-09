@@ -81,7 +81,7 @@ export const MatchCard = ({ match }: MatchCardProps) => {
 ```tsx
 import { cn } from "@/lib/utils";
 
-<div className={cn("rounded-lg p-4", isActive && "ring-primary ring-2", className)} />;
+<div className={cn("rounded-lg p-4", isActive && "ring-2 ring-primary", className)} />;
 ```
 
 ### 4.2 아이콘 및 이미지 최적화
