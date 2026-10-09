@@ -158,7 +158,7 @@
 
 ## 🏛️ Phase 2: PPR 쉘 및 기본 레이아웃 (PPR Shell & Layout)
 
-### [ ] TICKET-201: Next.js 15 PPR 및 remotePatterns 설정, Root Shell 구성
+### [x] TICKET-201: Next.js 15 PPR 및 remotePatterns 설정, Root Shell 구성
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-002
@@ -168,8 +168,8 @@
   2. `src/app/layout.tsx`에 `ThemeProvider`, 기본 메타데이터(OG 태그, Title, Description), 반응형 컨테이너 세팅
   3. 메인 콘텐츠 래퍼의 최대 너비(`max-w-5xl mx-auto`) 및 기본 패딩 정의
 - **Acceptance Criteria**:
-  - [ ] `next build` 시 PPR incremental 기능이 정상 활성화된다.
-  - [ ] PandaScore CDN 이미지를 `next/image`로 불러올 때 도메인 에러가 발생하지 않는다.
+  - [x] `next build` 시 PPR incremental 기능이 정상 활성화된다.
+  - [x] PandaScore CDN 이미지를 `next/image`로 불러올 때 도메인 에러가 발생하지 않는다.
 
 ---
 
