@@ -106,7 +106,7 @@
 
 ---
 
-### [ ] TICKET-102: LCK 팀 식별 상수 및 토너먼트 메타데이터 정의
+### [x] TICKET-102: LCK 팀 식별 상수 및 토너먼트 메타데이터 정의
 
 - **우선순위**: P1
 - **선행 의존성**: TICKET-101
@@ -116,8 +116,8 @@
   2. `src/constants/tournament.ts` 생성: 2026 Worlds 토너먼트 ID(Play-In `22046`, Group Stage `22047`, Playoffs `22048`) 매핑 상수 정의
   3. 특정 경기(`Match`)가 LCK 팀의 경기인지 판별하는 헬퍼 함수 `isLckMatch = (match: Match): boolean` 구현 (`const` 화살표 함수 & Named Export)
 - **Acceptance Criteria**:
-  - [ ] `isLckMatch` 함수가 양 팀 중 하나라도 LCK 팀 식별자를 포함하면 `true`를 반환한다.
-  - [ ] opponents가 비어있는 TBD 경기는 `false`를 반환한다.
+  - [x] `isLckMatch` 함수가 양 팀 중 하나라도 LCK 팀 식별자를 포함하면 `true`를 반환한다.
+  - [x] opponents가 비어있는 TBD 경기는 `false`를 반환한다.
 
 ---
 
