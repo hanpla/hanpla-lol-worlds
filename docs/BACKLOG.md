@@ -138,7 +138,7 @@
 
 ---
 
-### [ ] TICKET-104: PandaScore API 페처 및 5분 Next.js 캐싱 모듈 구현
+### [x] TICKET-104: PandaScore API 페처 및 5분 Next.js 캐싱 모듈 구현
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-003, TICKET-101, TICKET-103
@@ -150,9 +150,9 @@
   3. Zod 스키마 파싱으로 응답 무결성 검증
   4. 가져온 매치 목록을 KST 일자별로 그룹화하는 `groupMatchesByKstDate = (matches: Match[]): GroupedSchedule[] => ...` 구현
 - **Acceptance Criteria**:
-  - [ ] 실제 PandaScore API로부터 46개 경기 데이터를 성공적으로 가져온다.
-  - [ ] 5분간 외부 API 재호출이 발생하지 않고 캐시가 유지된다.
-  - [ ] KST 기준 일자별로 순서대로 정렬 및 그룹화된다.
+  - [x] 실제 PandaScore API로부터 46개 경기 데이터를 성공적으로 가져온다.
+  - [x] 5분간 외부 API 재호출이 발생하지 않고 캐시가 유지된다.
+  - [x] KST 기준 일자별로 순서대로 정렬 및 그룹화된다.
 
 ---
 
