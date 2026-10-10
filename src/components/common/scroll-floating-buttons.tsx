@@ -1,11 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type ScrollFloatingButtonsProps = {
   className?: string;
+};
+
+type ScrollButtonProps = {
+  label: string;
+  onClick: () => void;
+  icon: LucideIcon;
+  isInactive: boolean;
+};
+
+const ScrollButton = ({ label, onClick, icon: Icon, isInactive }: ScrollButtonProps) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-card/85 text-foreground shadow-md backdrop-blur-md transition-all duration-200 hover:border-primary/60 hover:bg-card hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 sm:h-10 sm:w-10",
+        isInactive ? "opacity-60 hover:opacity-100" : "opacity-100",
+      )}
+      aria-label={`${label} 스크롤 이동`}
+      title={label}
+    >
+      <Icon className="sm:h-4.5 sm:w-4.5 h-4 w-4" />
+      <span className="sr-only">{label}</span>
+    </button>
+  );
 };
 
 export const ScrollFloatingButtons = ({ className }: ScrollFloatingButtonsProps) => {
@@ -102,33 +127,18 @@ export const ScrollFloatingButtons = ({ className }: ScrollFloatingButtonsProps)
       role="region"
       aria-label="화면 스크롤 이동 컨트롤"
     >
-      <button
-        type="button"
+      <ScrollButton
+        label="최상단으로 이동"
         onClick={handleScrollToTop}
-        className={cn(
-          "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-card/85 text-foreground shadow-md backdrop-blur-md transition-all duration-200 hover:border-primary/60 hover:bg-card hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 sm:h-10 sm:w-10",
-          isAtTop ? "opacity-60 hover:opacity-100" : "opacity-100",
-        )}
-        aria-label="최상단으로 스크롤 이동"
-        title="최상단으로 이동"
-      >
-        <ArrowUp className="sm:h-4.5 sm:w-4.5 h-4 w-4" />
-        <span className="sr-only">최상단으로 이동</span>
-      </button>
-
-      <button
-        type="button"
+        icon={ArrowUp}
+        isInactive={isAtTop}
+      />
+      <ScrollButton
+        label="최하단으로 이동"
         onClick={handleScrollToBottom}
-        className={cn(
-          "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-card/85 text-foreground shadow-md backdrop-blur-md transition-all duration-200 hover:border-primary/60 hover:bg-card hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 sm:h-10 sm:w-10",
-          isAtBottom ? "opacity-60 hover:opacity-100" : "opacity-100",
-        )}
-        aria-label="최하단으로 스크롤 이동"
-        title="최하단으로 이동"
-      >
-        <ArrowDown className="sm:h-4.5 sm:w-4.5 h-4 w-4" />
-        <span className="sr-only">최하단으로 이동</span>
-      </button>
+        icon={ArrowDown}
+        isInactive={isAtBottom}
+      />
     </div>
   );
 };
