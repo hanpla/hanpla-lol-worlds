@@ -173,7 +173,7 @@
 
 ---
 
-### [ ] TICKET-202: 브랜드 헤더 및 테마 토글(Dark/Light) 컴포넌트 구현
+### [x] TICKET-202: 브랜드 헤더 및 테마 토글(Dark/Light) 컴포넌트 구현
 
 - **우선순위**: P1
 - **선행 의존성**: TICKET-201
@@ -183,8 +183,8 @@
   2. `src/components/common/theme-toggle.tsx` 구현 (`'use client'`, Lucide `Sun`/`Moon` 아이콘, Named Export)
   3. 헤더 상단 고정(`sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b`) 스타일링
 - **Acceptance Criteria**:
-  - [ ] 토글 버튼 클릭 시 부드럽게 다크/라이트 테마가 전환된다.
-  - [ ] 인라인 SVG 없이 `lucide-react` 아이콘으로 구현된다.
+  - [x] 토글 버튼 클릭 시 부드럽게 다크/라이트 테마가 전환된다.
+  - [x] 인라인 SVG 없이 `lucide-react` 아이콘으로 구현된다.
 
 ---
 
