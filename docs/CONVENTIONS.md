@@ -33,6 +33,14 @@ export const MatchCard = ({ match }: MatchCardProps) => {
 - **일반 컴포넌트 및 유틸리티**: **Named Export** (`export const ComponentName = ...`)를 필수로 사용합니다.
 - **Next.js 특수 라우팅 파일**: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx` 등 프레임워크 규약 파일만 `export default`를 사용합니다.
 
+### 1.4 반복되는 UI 패턴의 서브 컴포넌트 분리 (DRY 원칙)
+
+- 동일하거나 유사한 마크업 구조, 긴 Tailwind 클래스 묶음, 아이콘/접근성 속성을 가진 UI 블록(버튼, 배지, 카드 조각 등)이 **2회 이상 중복될 경우 인라인 복사 작성을 엄격히 지양**합니다.
+- **분리 가이드라인**:
+  - **파일 로컬 서브 컴포넌트**: 해당 파일 내에서만 소비되는 UI는 컴포넌트 상단/하단에 `const SubButton = ({ ... }: SubButtonProps) => ...` 형태로 선언하여 JSX 가독성을 높이고 유지보수성을 확보합니다.
+  - **데이터 주도 렌더링**: 반복되는 UI가 고정된 액션/버튼 목록인 경우, 설정 배열(`const actions = [...] as const`)을 정의하고 `.map()`으로 렌더링하거나 전용 서브 컴포넌트에 Props를 넘깁니다.
+  - **전역 공통 컴포넌트**: 여러 페이지 또는 컴포넌트에 걸쳐 재사용되는 UI는 `@/components/common/` 또는 `@/components/ui/`로 승격하여 분리합니다.
+
 ---
 
 ## 2. 파일 및 식별자 네이밍 컨벤션

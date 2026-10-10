@@ -9,9 +9,10 @@
 
 어떤 상황에서도 아래 5가지 원칙은 절대 위반할 수 없습니다:
 
-1. **`const` 화살표 함수 & Named Export 필수**
+1. **`const` 화살표 함수, Named Export & 서브 컴포넌트 모듈화 필수**
    - 모든 컴포넌트, 유틸리티, 헬퍼는 `const` 화살표 함수로 작성합니다 (`function` 키워드 선언문 일체 금지).
    - Next.js 특수 라우팅 파일(`page.tsx`, `layout.tsx` 등)을 제외한 모든 파일은 Named Export를 사용합니다.
+   - **반복 UI 패턴의 분리(DRY)**: 동일/유사한 스타일(Tailwind 클래스 묶음)이나 접근성 속성을 가진 UI 블록(버튼, 배지, 카드 조각 등)이 2회 이상 중복될 경우 인라인 복사 작성을 금지하고, 로컬 서브 컴포넌트(`const SubComponent = ...`) 또는 데이터 매핑(`items.map`)으로 적극 추출합니다.
 2. **케밥 케이스(`kebab-case`) 파일/디렉터리 명명**
    - 모든 파일명은 케밥 케이스를 준수합니다 (예: `match-card.tsx`, `pandascore-api.ts`, `kst-date.ts`).
 3. **`any` 타입 엄격 금지 & `type` 별칭 우선**
