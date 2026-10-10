@@ -188,18 +188,19 @@
 
 ---
 
-### [ ] TICKET-203: 상하단 이동 플로팅 스크롤 버튼 구현
+### [x] TICKET-203: 상하단 이동 플로팅 스크롤 버튼 구현
 
 - **우선순위**: P1
 - **선행 의존성**: TICKET-201
 - **목표**: 화면 우측 하단 플로팅 액션 버튼(FAB)을 통한 스무스 상하단 이동 제공
 - **상세 작업**:
   1. `src/components/common/scroll-floating-buttons.tsx` 구현 (`'use client'`, Named Export)
-  2. Top 버튼 클릭 시 최상단으로 `window.scrollTo({ top: 0, behavior: 'smooth' })`
-  3. Bottom 버튼 클릭 시 최하단으로 `window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })`
-  4. 화면 우측 하단(`fixed bottom-6 right-6 z-50`) 배치 및 블러 백그라운드 적용
+  2. `requestAnimationFrame` + `easeInOutCubic` 베지어 곡선 기반 가감속 애니메이션 엔진 구현 (OS/브라우저 설정과 무관하게 450~800ms 동안 시각적으로 확실한 스무스 스크롤 보장)
+  3. Top 버튼 클릭 시 최상단(y=0) 스무스 이동, Bottom 버튼 클릭 시 뷰포트를 고려한 정밀 바닥 좌표(`maxScrollTop = scrollHeight - window.innerHeight`)로 스무스 안착
+  4. 화면 우측 하단(`fixed bottom-6 right-6 z-50`) 배치 및 블러 백그라운드 적용, 접근성 속성(`role="region"`, `aria-label`, `title`) 구비
+  5. `src/app/layout.tsx` 정적 쉘(Static Shell)에 연동
 - **Acceptance Criteria**:
-  - [ ] 화면 우측 하단에 플로팅되며 클릭 시 매끄러운 스무스 스크롤로 상단/하단 끝까지 이동한다.
+  - [x] 화면 우측 하단에 플로팅되며 클릭 시 매끄러운 스무스 스크롤로 상단/하단 끝까지 이동한다.
 
 ---
 
