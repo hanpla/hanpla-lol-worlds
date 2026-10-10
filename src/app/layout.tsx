@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/common/header";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { pretendard } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -40,6 +41,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           disableTransitionOnChange
         >
           <div className="relative flex min-h-screen flex-col">
+            <Header />
             <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
               {children}
             </main>
