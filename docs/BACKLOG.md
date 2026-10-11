@@ -220,7 +220,7 @@
 
 ## ⚔️ Phase 3: 경기 일정 카드 및 타임라인 컴포넌트 (Schedule Components)
 
-### [ ] TICKET-301: 대진 카드 기본 컴포넌트 구현
+### [x] TICKET-301: 대진 카드 기본 컴포넌트 구현
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-101, TICKET-103
@@ -232,8 +232,8 @@
   4. 상태별 배지(예정, 진행 중 라이브 펄스, 종료) 표시
   5. 고유 DOM ID 부여: `id={`match-${match.id}`}`
 - **Acceptance Criteria**:
-  - [ ] TBD 상태의 매치와 실제 팀 매치가 모두 유려하게 렌더링된다.
-  - [ ] `<img>` 대신 `next/image`의 `Image` 컴포넌트가 사용된다.
+  - [x] TBD 상태의 매치와 실제 팀 매치가 모두 유려하게 렌더링된다.
+  - [x] `<img>` 대신 `next/image`의 `Image` 컴포넌트가 사용된다.
 
 ---
 
