@@ -10,6 +10,8 @@ export type MatchCardProps = {
   match: Match;
   children?: React.ReactNode;
   className?: string;
+  onClick?: () => void;
+  isInteractive?: boolean;
 };
 
 type MatchStatusBadgeProps = {
@@ -201,7 +203,13 @@ const CenterScoreDisplay = ({
   );
 };
 
-export const MatchCard = ({ match, children, className }: MatchCardProps) => {
+export const MatchCard = ({
+  match,
+  children,
+  className,
+  onClick,
+  isInteractive,
+}: MatchCardProps) => {
   const opponent1 = match.opponents[0]?.opponent;
   const opponent2 = match.opponents[1]?.opponent;
 
@@ -253,11 +261,16 @@ export const MatchCard = ({ match, children, className }: MatchCardProps) => {
   const isLoser1 = isFinished && !isWinner1 && isWinner2;
   const isLoser2 = isFinished && !isWinner2 && isWinner1;
 
+  const hasClickAction = Boolean(onClick);
+  const shouldBeInteractive = isInteractive ?? hasClickAction;
+
   return (
     <article
       id={`match-${match.id}`}
+      onClick={onClick}
       className={cn(
         "shadow-xs group relative overflow-hidden rounded-xl border border-border/70 bg-card/60 p-4 backdrop-blur-sm transition-all duration-200 hover:border-border hover:bg-card/80 hover:shadow-md sm:p-5",
+        shouldBeInteractive && "cursor-pointer hover:border-primary/40",
         className,
       )}
     >
