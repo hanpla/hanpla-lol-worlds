@@ -253,7 +253,7 @@
 
 ---
 
-### [ ] TICKET-303: 일자별 섹션 헤더 및 타임라인 렌더러 구현
+### [x] TICKET-303: 일자별 섹션 헤더 및 타임라인 렌더러 구현
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-104, TICKET-301, TICKET-302
@@ -262,8 +262,8 @@
   1. `src/components/schedule/timeline-section.tsx`: 일자 헤더(예: `10월 16일 (금)`) 및 하위 매치 리스트 렌더링
   2. `src/components/schedule/schedule-timeline.tsx`: 필터링된 전체 일정을 받아 순서대로 섹션 렌더링
 - **Acceptance Criteria**:
-  - [ ] 날짜별로 그룹이 나뉘고 헤더가 명확하게 구분된다.
-  - [ ] 시간순으로 매치 카드들이 정렬된다.
+  - [x] 날짜별로 그룹이 나뉘고 헤더가 명확하게 구분된다.
+  - [x] 시간순으로 매치 카드들이 정렬된다.
 
 ---
 
