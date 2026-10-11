@@ -2,6 +2,7 @@ import "server-only";
 
 import { WORLDS_2026_SERIE_ID } from "@/constants/tournament";
 import { formatToKstDate, getDateKeyKst } from "@/lib/date/kst-date";
+import { groupMatchesByKstDate as groupMatchesByKstDateImpl } from "@/lib/schedule/filter-schedule";
 import { matchesResponseSchema, type GroupedSchedule, type Match } from "@/types/pandascore";
 
 const PANDASCORE_MATCHES_API_URL = `https://api.pandascore.co/lol/matches?filter[serie_id]=${WORLDS_2026_SERIE_ID}&sort=scheduled_at`;
@@ -54,39 +55,5 @@ export const get2026WorldsMatches = async (): Promise<Match[]> => {
  * @returns KST 일자별로 그룹화된 일정 목록(GroupedSchedule[])
  */
 export const groupMatchesByKstDate = (matches: Match[]): GroupedSchedule[] => {
-  const groupsMap = new Map<string, GroupedSchedule>();
-
-  for (const match of matches) {
-    const dateString = match.scheduled_at ?? match.begin_at;
-    if (!dateString) {
-      continue;
-    }
-
-    const dateKey = getDateKeyKst(dateString);
-    const existingGroup = groupsMap.get(dateKey);
-
-    if (existingGroup) {
-      existingGroup.matches.push(match);
-    } else {
-      groupsMap.set(dateKey, {
-        dateKey,
-        formattedDate: formatToKstDate(dateString),
-        matches: [match],
-      });
-    }
-  }
-
-  const sortedGroups = Array.from(groupsMap.values()).sort((a, b) =>
-    a.dateKey.localeCompare(b.dateKey),
-  );
-
-  for (const group of sortedGroups) {
-    group.matches.sort((a, b) => {
-      const timeA = new Date(a.scheduled_at ?? a.begin_at ?? 0).getTime();
-      const timeB = new Date(b.scheduled_at ?? b.begin_at ?? 0).getTime();
-      return timeA - timeB;
-    });
-  }
-
-  return sortedGroups;
+  return groupMatchesByKstDateImpl(matches);
 };
