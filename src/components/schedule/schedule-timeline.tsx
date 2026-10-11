@@ -1,3 +1,4 @@
+import { EmptyState } from "@/components/schedule/empty-state";
 import { TimelineSection } from "@/components/schedule/timeline-section";
 import { cn } from "@/lib/utils";
 import type { GroupedSchedule } from "@/types/pandascore";
@@ -19,17 +20,13 @@ export const ScheduleTimeline = ({
   // dateKey("YYYY-MM-DD") 기준으로 날짜 섹션 오름차순 정렬
   const sortedSchedules = [...groupedSchedules].sort((a, b) => a.dateKey.localeCompare(b.dateKey));
 
-  // 일정이 존재하지 않는 경우 빈 상태 슬롯 또는 fallback 렌더링
+  // 일정이 존재하지 않는 경우 빈 상태 슬롯 또는 EmptyState 컴포넌트 렌더링
   if (sortedSchedules.length === 0) {
     if (emptySlot) {
       return <>{emptySlot}</>;
     }
 
-    return (
-      <div className="flex w-full flex-col items-center justify-center rounded-xl border border-dashed border-border/80 bg-muted/20 py-12 text-center text-muted-foreground">
-        <p className="text-sm font-medium">표시할 경기 일정이 없습니다.</p>
-      </div>
-    );
+    return <EmptyState />;
   }
 
   return (
