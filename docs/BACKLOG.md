@@ -283,7 +283,7 @@
 
 ## 🧭 Phase 4: 네비게이션 탭, 필터링 및 포커스 인터랙션 (Navigation & Interactions)
 
-### [ ] TICKET-401: 월별 탭(10월/11월) 및 LCK 필터 토글 컴포넌트 구현
+### [x] TICKET-401: 월별 탭(10월/11월) 및 LCK 필터 토글 컴포넌트 구현
 
 - **우선순위**: P0
 - **선행 의존성**: TICKET-102, TICKET-201
@@ -293,8 +293,8 @@
   2. `src/components/filter/lck-filter-toggle.tsx`: LCK 전용 필터 버튼 (`const` 화살표 함수, Named Export)
   3. `cn()` 유틸리티를 활용한 조건부 활성화 스타일 적용
 - **Acceptance Criteria**:
-  - [ ] 탭 및 필터 버튼 클릭 시 활성 스타일이 즉시 전환된다.
-  - [ ] 모바일 환경 터치 타깃 크기(최소 44px)를 만족한다.
+  - [x] 탭 및 필터 버튼 클릭 시 활성 스타일이 즉시 전환된다.
+  - [x] 모바일 환경 터치 타깃 크기(최소 44px)를 만족한다.
 
 ---
 
