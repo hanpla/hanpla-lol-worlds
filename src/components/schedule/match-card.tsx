@@ -84,8 +84,8 @@ const TeamSlot = ({
         isLoser && "opacity-60",
       )}
     >
-      {/* 팀 로고 또는 TBD 플레이스홀더 */}
-      <div className="shadow-2xs relative flex size-10 shrink-0 items-center justify-center rounded-full border border-border/80 bg-background/90 p-1 sm:size-12">
+      {/* 팀 로고 또는 TBD 플레이스홀더 (다크모드에서도 검은 아이콘이 묻히지 않도록 항상 흰색 배경 고정) */}
+      <div className="shadow-2xs relative flex size-10 shrink-0 items-center justify-center rounded-full border border-border/80 bg-white p-1 sm:size-12">
         {hasImage && team?.image_url ? (
           <Image
             src={team.image_url}

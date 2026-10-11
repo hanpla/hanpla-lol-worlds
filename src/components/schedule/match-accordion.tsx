@@ -90,13 +90,18 @@ const GameSetRow = ({ game, opponents }: GameSetRowProps) => {
         {isFinished && winningTeam ? (
           <div className="flex items-center gap-1.5 truncate">
             {winningTeam.image_url ? (
-              <Image
-                src={winningTeam.image_url}
-                alt={`${winningTeam.name} 팀 로고`}
-                width={20}
-                height={20}
-                className="size-5 shrink-0 object-contain"
-              />
+              <div
+                className="shadow-2xs flex size-6 shrink-0 items-center justify-center rounded-full border border-border/60 bg-white p-0.5"
+                title={`${winningTeam.name} 팀 로고`}
+              >
+                <Image
+                  src={winningTeam.image_url}
+                  alt={`${winningTeam.name} 팀 로고`}
+                  width={20}
+                  height={20}
+                  className="size-4 shrink-0 object-contain"
+                />
+              </div>
             ) : null}
             <span className="truncate text-xs font-bold text-gold sm:text-sm">
               {winningTeam.name}
