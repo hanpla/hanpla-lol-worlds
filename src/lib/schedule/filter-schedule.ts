@@ -43,13 +43,115 @@ export const parseLckQuery = (lckParam: string | null | undefined): boolean => {
 };
 
 /**
- * 경기 목록을 바탕으로 첫 화면 접속 시 기본으로 노출할 월(Month)을 계산합니다.
+ * 2026 롤드컵 경기 목록 중 자동 스크롤 및 포커스 대상이 될 타깃 경기(Target Match)를 계산합니다.
  *
- * 우선순위:
- * 1. 현재 진행 중인 경기(status === 'running')의 KST 월
- * 2. 현재 시각 이후 가장 가까운 예정 경기(status === 'not_started' 또는 미래 시간)의 KST 월
- * 3. 모든 경기가 종료된 경우 마지막 경기(결승전)의 KST 월
- * 4. 경기 목록이 비어있는 경우 기본값 10(10월)
+ * 타깃 선정 우선순위:
+ * 1. 현재 라이브 진행 중인 경기 (`status === 'running'`)
+ * 2. 가장 빠른 미래 예정 경기 (`status === 'not_started'` 중 현재 시각 이후 가장 가까운 경기)
+ * 3. 상태와 무관하게 현재 시각 이후에 예정된 가장 가까운 미래 경기
+ * 4. 예정 시각이 다소 지났으나 아직 시작되지 않은 잔여 `not_started` 경기
+ * 5. 모든 경기가 종료된 경우 마지막 결승전 매치
+ *
+ * @param matches 롤드컵 전체 또는 필터링된 경기 목록
+ * @param referenceTime 기준 시각 (기본값: new Date())
+ * @returns 포커스 대상 Match 객체 또는 경기가 없을 시 null
+ */
+export const getTargetMatch = (
+  matches: readonly Match[],
+  referenceTime: Date = new Date(),
+): Match | null => {
+  if (!matches || matches.length === 0) {
+    return null;
+  }
+
+  // 1. 현재 진행 중인 경기 (running 우선)
+  const runningMatch = matches.find((match) => match.status === "running");
+  if (runningMatch) {
+    return runningMatch;
+  }
+
+  const refTimestamp = referenceTime.getTime();
+
+  // 2. 가장 빠른 미래 not_started 경기
+  const futureNotStartedMatches = matches
+    .filter((match) => {
+      if (match.status !== "not_started") {
+        return false;
+      }
+      const dateStr = match.scheduled_at ?? match.begin_at;
+      if (!dateStr) {
+        return false;
+      }
+      return new Date(dateStr).getTime() >= refTimestamp;
+    })
+    .sort((a, b) => {
+      const timeA = new Date(a.scheduled_at ?? a.begin_at ?? 0).getTime();
+      const timeB = new Date(b.scheduled_at ?? b.begin_at ?? 0).getTime();
+      return timeA - timeB;
+    });
+
+  if (futureNotStartedMatches.length > 0) {
+    return futureNotStartedMatches[0];
+  }
+
+  // 3. 상태와 무관하게 현재 시각 이후에 예정된 가장 가까운 미래 경기
+  const futureMatches = matches
+    .filter((match) => {
+      const dateStr = match.scheduled_at ?? match.begin_at;
+      if (!dateStr) {
+        return false;
+      }
+      return new Date(dateStr).getTime() >= refTimestamp;
+    })
+    .sort((a, b) => {
+      const timeA = new Date(a.scheduled_at ?? a.begin_at ?? 0).getTime();
+      const timeB = new Date(b.scheduled_at ?? b.begin_at ?? 0).getTime();
+      return timeA - timeB;
+    });
+
+  if (futureMatches.length > 0) {
+    return futureMatches[0];
+  }
+
+  // 4. 예정 시각이 다소 지났으나 아직 시작되지 않은 not_started 경기
+  const remainingNotStarted = matches
+    .filter((match) => match.status === "not_started")
+    .sort((a, b) => {
+      const timeA = new Date(a.scheduled_at ?? a.begin_at ?? 0).getTime();
+      const timeB = new Date(b.scheduled_at ?? b.begin_at ?? 0).getTime();
+      return timeA - timeB;
+    });
+
+  if (remainingNotStarted.length > 0) {
+    return remainingNotStarted[0];
+  }
+
+  // 5. 모든 경기가 종료된 경우 마지막 경기 (결승전)
+  return matches[matches.length - 1];
+};
+
+/**
+ * 타깃 경기(Target Match)의 고유 식별자(ID)를 반환합니다.
+ *
+ * @param matches 롤드컵 전체 또는 필터링된 경기 목록
+ * @param referenceTime 기준 시각 (기본값: new Date())
+ * @returns 포커스 대상 매치의 ID 또는 null
+ */
+export const getTargetMatchId = (
+  matches: readonly Match[],
+  referenceTime: Date = new Date(),
+): number | null => {
+  const target = getTargetMatch(matches, referenceTime);
+  return target ? target.id : null;
+};
+
+/**
+ * 경기 목록을 바탕으로 첫 화면 접속 시 기본으로 노출할 월(Month)을 계산합니다.
+ * 타깃 경기(`getTargetMatch`)가 속한 한국 시간(KST) 월을 우선 선택합니다.
+ *
+ * @param matches 롤드컵 전체 경기 목록
+ * @param referenceTime 기준 시각 (기본값: new Date())
+ * @returns 기본 노출 월 (10 또는 11)
  */
 export const getDefaultWorldsMonth = (
   matches: readonly Match[],
@@ -59,53 +161,14 @@ export const getDefaultWorldsMonth = (
     return DEFAULT_WORLDS_MONTHS[0];
   }
 
-  // 1. 현재 진행 중인 경기 확인
-  const runningMatch = matches.find((match) => match.status === "running");
-  if (runningMatch) {
-    const dateStr = runningMatch.scheduled_at ?? runningMatch.begin_at;
+  const targetMatch = getTargetMatch(matches, referenceTime);
+  if (targetMatch) {
+    const dateStr = targetMatch.scheduled_at ?? targetMatch.begin_at;
     if (dateStr) {
       const month = getMonthKst(dateStr);
       if ((DEFAULT_WORLDS_MONTHS as readonly number[]).includes(month)) {
         return month;
       }
-    }
-  }
-
-  // 2. 현재 시각 이후 가장 가까운 경기 확인
-  const refTimestamp = referenceTime.getTime();
-  const futureMatches = matches
-    .filter((match) => {
-      const dateStr = match.scheduled_at ?? match.begin_at;
-      if (!dateStr) {
-        return false;
-      }
-      const matchTimestamp = new Date(dateStr).getTime();
-      return matchTimestamp >= refTimestamp;
-    })
-    .sort((a, b) => {
-      const timeA = new Date(a.scheduled_at ?? a.begin_at ?? 0).getTime();
-      const timeB = new Date(b.scheduled_at ?? b.begin_at ?? 0).getTime();
-      return timeA - timeB;
-    });
-
-  if (futureMatches.length > 0) {
-    const nextMatch = futureMatches[0];
-    const dateStr = nextMatch.scheduled_at ?? nextMatch.begin_at;
-    if (dateStr) {
-      const month = getMonthKst(dateStr);
-      if ((DEFAULT_WORLDS_MONTHS as readonly number[]).includes(month)) {
-        return month;
-      }
-    }
-  }
-
-  // 3. 모든 경기가 과거인 경우 마지막 경기 기준
-  const lastMatch = matches[matches.length - 1];
-  const lastDateStr = lastMatch?.scheduled_at ?? lastMatch?.begin_at;
-  if (lastDateStr) {
-    const month = getMonthKst(lastDateStr);
-    if ((DEFAULT_WORLDS_MONTHS as readonly number[]).includes(month)) {
-      return month;
     }
   }
 
