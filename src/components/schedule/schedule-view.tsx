@@ -1,5 +1,6 @@
 "use client";
 
+import { AutoScrollFocus } from "@/components/schedule/auto-scroll-focus";
 import { EmptyState } from "@/components/schedule/empty-state";
 import { ScheduleFilterBar } from "@/components/schedule/schedule-filter-bar";
 import { ScheduleTimeline } from "@/components/schedule/schedule-timeline";
@@ -48,6 +49,9 @@ export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
       aria-label="2026 롤드컵 경기 일정"
       className={cn("w-full space-y-6 sm:space-y-8", className)}
     >
+      {/* 0. 오늘/다음 경기 자동 스무스 스크롤 포커스 컨트롤러 */}
+      <AutoScrollFocus matches={matches} />
+
       {/* 1. 상단 월별 탭 & LCK 필터 툴바 */}
       <ScheduleFilterBar
         selectedMonth={selectedMonth}
