@@ -331,19 +331,21 @@
 
 ## 🚀 Phase 5: 4단계 품질 검증 및 프로덕션 빌드 (Verification Pipeline & QA)
 
-### [ ] TICKET-501: 4단계 검증 파이프라인 실행 및 프로덕션 빌드 통과
+### [x] TICKET-501: 헤더 리팩토링 및 네비게이션 탭/필터 스티키 고정
 
 - **우선순위**: P0
-- **선행 의존성**: Phase 0~4 모든 티켓
-- **목표**: [RULE.md](./RULE.md)의 4단계 검증 파이프라인 전수 통과 확인
+- **선행 의존성**: TICKET-403
+- **목표**: 헤더 타이틀에서 "2026 롤드컵 경기 일정" 문구를 제거하고 "2026 WORLDS"만 간결하게 유지하며, 스크롤 시 월별 탭(10월/11월) 및 LCK 경기만 필터 탭이 헤더와 함께 고정되어 내려오도록(Sticky Header) UI 리팩토링
 - **상세 작업**:
-  1. 1단계: 코드 포맷팅 확인 (`npm run format` or Prettier)
-  2. 2단계: 린트 정적 분석 통과 (`npm run lint`)
-  3. 3단계: TypeScript 정적 타입 검사 통과 (`npx tsc --noEmit`)
-  4. 4단계: 프로덕션 빌드 성공 (`npm run build`) - PPR static/dynamic 분할 로그 확인
+  1. `src/components/common/header.tsx` 리팩토링: "2026 롤드컵 경기 일정" 텍스트 제거, "2026 WORLDS" 브랜드 타이틀과 트로피 아이콘, 테마 토글 중심의 콤팩트한 네비게이션 바로 개편 (`h-14`, `sticky top-0 z-40`)
+  2. `src/components/schedule/schedule-filter-bar.tsx` 스티키화: `sticky top-14 z-30` 및 `border-b bg-background/85 backdrop-blur-md` 적용으로 스크롤 시 헤더 바로 아래 밀착 고정
+  3. 레이아웃 패딩 최적화: `src/app/layout.tsx`와 `src/components/schedule/schedule-view.tsx` 여백을 정비하여 초기 진입 및 스크롤 시 점프/갭 없는 매끄러운 뷰 제공
+  4. 스켈레톤 동기화: `src/components/schedule/schedule-skeleton.tsx`에 동일 위치 스티키 필터 바 스켈레톤을 구성하여 PPR 스트리밍 중 Layout Shift(Zero CLS) 방지
 - **Acceptance Criteria**:
-  - [ ] 4단계 검증에서 에러 및 경고가 0개이다.
-  - [ ] Next.js 15 PPR 번들이 성공적으로 빌드된다.
+  - [x] 헤더에서 "2026 롤드컵 경기 일정" 문구가 제거되고 "2026 WORLDS"만 깔끔하게 노출된다.
+  - [x] 페이지 스크롤 시 헤더와 함께 10월/11월 탭 및 LCK 경기만 필터 툴바가 상단에 고정되어 항상 조작할 수 있다.
+  - [x] 모바일 및 데스크톱 환경에서 스티키 영역이 자연스럽게 이어지며 매치 카드가 아래로 부드럽게 통과한다.
+  - [x] 4단계 검증(포맷팅, 린트, tsc, 빌드)을 모두 통과한다.
 
 ---
 
