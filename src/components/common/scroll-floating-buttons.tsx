@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUp, type LucideIcon } from "lucide-react";
+import { smoothScrollTo } from "@/lib/scroll/smooth-scroll";
 import { cn } from "@/lib/utils";
 
 type ScrollFloatingButtonsProps = {
@@ -36,7 +37,7 @@ const ScrollButton = ({ label, onClick, icon: Icon, isInactive }: ScrollButtonPr
 export const ScrollFloatingButtons = ({ className }: ScrollFloatingButtonsProps) => {
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
   const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
-  const animationFrameRef = useRef<number | null>(null);
+  const cancelScrollRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,57 +59,13 @@ export const ScrollFloatingButtons = ({ className }: ScrollFloatingButtonsProps)
 
   useEffect(() => {
     return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      cancelScrollRef.current?.();
     };
   }, []);
 
-  const smoothScrollTo = (targetY: number) => {
-    if (typeof window === "undefined") return;
-
-    if (animationFrameRef.current !== null) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-
-    const startY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-    const distance = targetY - startY;
-
-    if (Math.abs(distance) < 2) return;
-
-    // 최소 450ms ~ 최대 800ms 동안 시각적으로 확실히 체감되는 부드러운 가감속 애니메이션 보장
-    const duration = Math.min(Math.max(Math.abs(distance) * 0.5, 450), 800);
-    const startTime = performance.now();
-
-    const easeInOutCubic = (t: number): number => {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    };
-
-    const step = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = easeInOutCubic(progress);
-
-      const nextY = Math.round(startY + distance * ease);
-      window.scrollTo(0, nextY);
-      if (document.documentElement.scrollTop !== nextY) {
-        document.documentElement.scrollTop = nextY;
-      }
-
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(step);
-      } else {
-        animationFrameRef.current = null;
-        window.scrollTo(0, targetY);
-      }
-    };
-
-    animationFrameRef.current = requestAnimationFrame(step);
-  };
-
   const handleScrollToTop = () => {
-    smoothScrollTo(0);
+    cancelScrollRef.current?.();
+    cancelScrollRef.current = smoothScrollTo(0);
   };
 
   const handleScrollToBottom = () => {
@@ -118,7 +75,8 @@ export const ScrollFloatingButtons = ({ className }: ScrollFloatingButtonsProps)
       document.documentElement.scrollHeight,
     );
     const maxScrollTop = Math.max(0, scrollHeight - window.innerHeight);
-    smoothScrollTo(maxScrollTop);
+    cancelScrollRef.current?.();
+    cancelScrollRef.current = smoothScrollTo(maxScrollTop);
   };
 
   return (
