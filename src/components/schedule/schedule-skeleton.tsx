@@ -95,20 +95,30 @@ export const ScheduleSkeleton = ({ className }: ScheduleSkeletonProps) => {
       role="status"
       aria-busy="true"
       aria-label="경기 일정을 불러오는 중입니다"
-      className={cn("w-full space-y-8", className)}
+      className={cn("w-full", className)}
     >
       <span className="sr-only">경기 일정 데이터를 불러오는 중입니다...</span>
 
-      {SKELETON_SECTION_COUNTS.map((matchCount, groupIndex) => (
-        <div key={`skeleton-group-${groupIndex}`} className="space-y-4">
-          <DateHeaderSkeleton />
-          <div className="grid gap-3.5 sm:gap-4">
-            {Array.from({ length: matchCount }, (_, i) => (
-              <MatchCardSkeleton key={`skeleton-card-${groupIndex}-${i}`} />
-            ))}
-          </div>
+      {/* 스티키 필터 바 스켈레톤 (헤더 아래 sticky top-14 고정, CLS 방지) */}
+      <div className="sticky top-14 z-30 w-full border-b border-border/70 bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-2 sm:px-6 sm:py-2.5 lg:px-8">
+          <Skeleton className="h-9 w-36 rounded-xl sm:h-10 sm:w-44" />
+          <Skeleton className="h-9 w-28 rounded-xl sm:h-10 sm:w-36" />
         </div>
-      ))}
+      </div>
+
+      <div className="mx-auto max-w-5xl space-y-8 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        {SKELETON_SECTION_COUNTS.map((matchCount, groupIndex) => (
+          <div key={`skeleton-group-${groupIndex}`} className="space-y-4">
+            <DateHeaderSkeleton />
+            <div className="grid gap-3.5 sm:gap-4">
+              {Array.from({ length: matchCount }, (_, i) => (
+                <MatchCardSkeleton key={`skeleton-card-${groupIndex}-${i}`} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };

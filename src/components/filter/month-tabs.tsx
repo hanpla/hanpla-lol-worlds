@@ -44,7 +44,7 @@ const MonthTabButton = ({ month, isSelected, onClick, className }: MonthTabButto
       aria-label={`${month}월 경기 일정 보기`}
       onClick={() => onClick(month)}
       className={cn(
-        "focus-visible:outline-hidden relative flex min-h-[44px] min-w-[72px] items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:min-w-[88px]",
+        "focus-visible:outline-hidden relative flex min-h-[38px] min-w-[62px] items-center justify-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:min-h-[40px] sm:min-w-[76px] sm:gap-1.5 sm:px-3.5 sm:py-2 sm:text-sm",
         isSelected
           ? "shadow-xs border border-primary/25 bg-background font-bold text-primary dark:border-primary/30 dark:bg-card dark:text-primary"
           : "border border-transparent font-medium text-muted-foreground hover:bg-background/50 hover:text-foreground",
@@ -53,7 +53,7 @@ const MonthTabButton = ({ month, isSelected, onClick, className }: MonthTabButto
     >
       <Calendar
         className={cn(
-          "size-4 shrink-0 transition-colors duration-200",
+          "size-3.5 shrink-0 transition-colors duration-200 sm:size-4",
           isSelected ? "text-primary" : "text-muted-foreground",
         )}
         aria-hidden="true"

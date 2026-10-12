@@ -7,32 +7,34 @@ type HeaderProps = {
   className?: string;
 };
 
+/**
+ * 2026 롤드컵(Worlds) 글로벌 브랜드 상단 고정 네비게이션 헤더 컴포넌트입니다.
+ * 불필요한 부제 텍스트를 배제하고 '2026 WORLDS' 브랜드 타이틀과 원클릭 테마 토글(Dark/Light)을 콤팩트하게 제공합니다.
+ */
 export const Header = ({ className }: HeaderProps) => {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full border-b border-border/80 bg-background/85 backdrop-blur-md",
+        "sticky top-0 z-40 w-full border-b border-border/80 bg-background/85 backdrop-blur-md transition-colors",
         className,
       )}
     >
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center justify-center px-4 py-5 text-center sm:px-6 sm:py-7 lg:px-8">
-        <div className="absolute right-4 top-4 sm:right-6 sm:top-5 lg:right-8 lg:top-6">
-          <ThemeToggle />
-        </div>
-
+      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="group flex flex-col items-center transition-opacity hover:opacity-95"
+          className="group inline-flex items-center gap-2.5 transition-opacity hover:opacity-90"
+          aria-label="2026 WORLDS 홈"
         >
-          <div className="shadow-xs mb-2 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold tracking-wider text-primary">
-            <Trophy className="h-3.5 w-3.5 text-primary" />
-            <span>2026 WORLDS</span>
+          <div className="shadow-xs flex size-8 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+            <Trophy className="size-4.5 text-primary" />
           </div>
 
-          <h1 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl md:text-4xl">
-            2026 롤드컵 경기 일정
+          <h1 className="text-base font-black tracking-wider text-foreground sm:text-lg">
+            2026 WORLDS
           </h1>
         </Link>
+
+        <ThemeToggle />
       </div>
     </header>
   );

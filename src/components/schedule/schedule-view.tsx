@@ -45,14 +45,11 @@ export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
     : "해당 월의 경기 일정이 아직 발표되지 않았거나 종료되었습니다.";
 
   return (
-    <section
-      aria-label="2026 롤드컵 경기 일정"
-      className={cn("w-full space-y-6 sm:space-y-8", className)}
-    >
+    <section aria-label="2026 롤드컵 경기 일정" className={cn("w-full", className)}>
       {/* 0. 오늘/다음 경기 자동 스무스 스크롤 포커스 컨트롤러 */}
       <AutoScrollFocus matches={matches} />
 
-      {/* 1. 상단 월별 탭 & LCK 필터 툴바 */}
+      {/* 1. 상단 월별 탭 & LCK 필터 툴바 (헤더 아래 고정 스티키 바) */}
       <ScheduleFilterBar
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
@@ -62,18 +59,20 @@ export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
       />
 
       {/* 2. 일정 타임라인 섹션 목록 (경기 없을 시 EmptyState 노출) */}
-      <div className={cn("transition-opacity duration-200", isPending && "opacity-60")}>
-        <ScheduleTimeline
-          groupedSchedules={groupedSchedules}
-          emptySlot={
-            <EmptyState
-              title={emptyTitle}
-              description={emptyDescription}
-              onReset={handleResetFilters}
-              resetButtonText="전체 경기 보기"
-            />
-          }
-        />
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className={cn("transition-opacity duration-200", isPending && "opacity-60")}>
+          <ScheduleTimeline
+            groupedSchedules={groupedSchedules}
+            emptySlot={
+              <EmptyState
+                title={emptyTitle}
+                description={emptyDescription}
+                onReset={handleResetFilters}
+                resetButtonText="전체 경기 보기"
+              />
+            }
+          />
+        </div>
       </div>
     </section>
   );

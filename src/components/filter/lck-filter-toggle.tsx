@@ -107,7 +107,7 @@ export const LckFilterToggle = ({
       disabled={disabled}
       onClick={handleClick}
       className={cn(
-        "focus-visible:outline-hidden group relative inline-flex min-h-[44px] min-w-[44px] items-center justify-between gap-2.5 rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:px-4 sm:text-sm",
+        "focus-visible:outline-hidden group relative inline-flex min-h-[38px] min-w-[40px] items-center justify-between gap-2 rounded-xl border px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:min-h-[40px] sm:gap-2.5 sm:px-3 sm:py-2 sm:text-sm",
         isLckOnly
           ? "shadow-xs border-primary/40 bg-primary/10 text-primary ring-1 ring-primary/20 dark:border-primary/50 dark:bg-primary/15"
           : "border-border/80 bg-background/80 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground",
@@ -115,13 +115,13 @@ export const LckFilterToggle = ({
         className,
       )}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2">
         <LckBadge isActive={isLckOnly} />
         <span className="font-semibold tracking-tight">LCK 경기만</span>
         {count !== undefined ? (
           <span
             className={cn(
-              "rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular-nums transition-colors duration-200",
+              "rounded-full px-1.5 py-0.5 text-[10px] font-bold tabular-nums transition-colors duration-200 sm:text-[11px]",
               isLckOnly ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground",
             )}
           >
