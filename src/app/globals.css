@@ -10,7 +10,7 @@
     --card-foreground: 224 71% 4%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71% 4%;
-    --primary: 43 85% 45%;
+    --primary: 43 88% 38%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 14% 96%;
     --secondary-foreground: 224 71% 4%;
@@ -22,11 +22,11 @@
     --destructive-foreground: 210 40% 98%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 43 85% 45%;
+    --ring: 43 88% 38%;
     --radius: 0.5rem;
 
     /* LoL Worlds Accent Colors */
-    --gold: 43 85% 45%;
+    --gold: 43 88% 38%;
     --gold-foreground: 0 0% 100%;
     --cyan: 187 90% 38%;
     --cyan-foreground: 0 0% 100%;
