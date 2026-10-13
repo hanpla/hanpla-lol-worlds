@@ -15,7 +15,7 @@ flowchart TD
         FAB["Floating Scroll Buttons (Top/Bottom)"]
     end
 
-    subgraph NextServer ["Next.js 15 Server (App Router)"]
+    subgraph NextServer ["Next.js 16 Server (App Router)"]
         subgraph StaticShell ["Static Shell (0ms 사전 렌더링)"]
             Layout["Root Layout (Theme, Fonts)"]
             Header["Header (Title, Dark/Light Toggle)"]
@@ -55,9 +55,9 @@ flowchart TD
 
 ---
 
-## 2. Next.js 15 PPR (Partial Prerendering) 렌더링 파이프라인
+## 2. Next.js 16 Cache Components & PPR (Partial Prerendering) 렌더링 파이프라인
 
-본 프로젝트는 Next.js 15의 **PPR(Partial Prerendering)**을 통해 정적 웹의 극한의 속도와 동적 웹의 실시간성을 동시에 확보합니다.
+본 프로젝트는 Next.js 16의 **Cache Components 및 Partial Prefetching(PPR)**을 통해 정적 웹의 극한의 속도와 동적 웹의 실시간성을 동시에 확보합니다.
 
 ### 2.1 렌더링 분할 구조
 
@@ -167,9 +167,8 @@ export type GroupedSchedule = {
 
 ```typescript
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: "incremental",
-  },
+  cacheComponents: true,
+  partialPrefetching: true,
   images: {
     remotePatterns: [
       {

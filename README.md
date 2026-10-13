@@ -1,13 +1,13 @@
 # 🏆 2026 롤드컵(Worlds) 경기 일정 확인 서비스
 
 2026 League of Legends World Championship의 전체 경기 일정을 실시간에 가깝게 빠르고 쾌적하게 확인할 수 있는 웹 애플리케이션입니다.  
-최신 **Next.js 15 App Router**의 **PPR(Partial Prerendering)**과 **5분 ISR 데이터 캐시**를 기반으로 수많은 팬이 동시 접속해도 안정적이고 압도적인 로딩 속도를 보장합니다.
+최신 **Next.js 16.4.0 App Router**의 **Cache Components (PPR)**와 **5분 ISR 데이터 캐시**를 기반으로 수많은 팬이 동시 접속해도 안정적이고 압도적인 로딩 속도를 보장합니다.
 
 ---
 
 ## 🌟 주요 기능
 
-- ⚡ **Next.js PPR (Partial Prerendering) 초고속 로딩**: 정적 쉘(Static Shell)이 0ms에 먼저 렌더링되고, 일정 데이터는 Suspense를 통해 백그라운드에서 매끄럽게 스트리밍 결합됩니다.
+- ⚡ **Next.js 16 Cache Components & PPR 초고속 로딩**: 정적 쉘(Static Shell)이 0ms에 먼저 렌더링되고, 일정 데이터는 Suspense를 통해 백그라운드에서 매끄럽게 스트리밍 결합됩니다.
 - 🛡️ **5분 스마트 캐싱**: PandaScore API를 5분(`revalidate: 300`) 단위로 캐시하여 API 과부하 및 레이트 리밋을 원천 차단하고 서버 자원을 절약합니다.
 - 🎯 **오늘/다음 예정 경기 자동 포커스**: 첫 페이지 진입 시 오늘 진행 중이거나 가장 가까운 다음 예정 경기 카드로 부드럽게 스무스 스크롤되며 하이라이트 애니메이션이 점멸합니다.
 - 🗓️ **월별 네비게이션 탭 (10월 / 11월)**: 대회 진행 기간에 맞춰 월별로 빠르게 일정을 전환하며 볼 수 있습니다.
@@ -22,8 +22,8 @@
 
 ## 🛠️ 기술 스택
 
-- **프레임워크**: Next.js 15+ (App Router, React 19)
-- **렌더링 전략**: Partial Prerendering (PPR `incremental`) + React Server Components (RSC)
+- **프레임워크**: Next.js 16.4.0 (Turbopack, App Router, React 19)
+- **렌더링 전략**: Cache Components + Partial Prefetching (PPR) + React Server Components (RSC)
 - **언어**: TypeScript (Strict Mode)
 - **스타일링**: Tailwind CSS
 - **컴포넌트 라이브러리**: shadcn/ui, Radix UI
@@ -78,7 +78,7 @@ pnpm dev
 
 ### 4. 프로덕션 빌드 및 실행
 
-Next.js PPR이 정상 동작하는지 빌드하여 검증합니다.
+Next.js 16 Cache Components 및 PPR이 정상 동작하는지 빌드하여 검증합니다.
 
 ```bash
 npm run build

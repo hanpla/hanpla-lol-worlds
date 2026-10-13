@@ -374,3 +374,34 @@
 - **Acceptance Criteria**:
   - [x] 모바일 환경에서 레이아웃 깨짐 현상이 일절 없다.
   - [x] 상하단 플로팅 스크롤 버튼이 모바일 내비게이션과 간섭되지 않는다.
+
+---
+
+## 🚀 Phase 6: Next.js 16.4.0 안정화 버전 마이그레이션 (Migration & Modernization)
+
+### [x] TICKET-601: Next.js 16.4.0 패키지 업그레이드 및 설정 정비
+
+- **우선순위**: P0
+- **선행 의존성**: TICKET-503
+- **목표**: 불안정한 Next.js 15 Canary(15.6.0-canary.61)에서 최신 공식 안정 버전인 Next.js 16.4.0으로 의존성을 안전하게 격상하고 설정 정비
+- **상세 작업**:
+  1. `package.json`의 `next` 및 `eslint-config-next`를 `16.4.0`으로 업데이트하고 최신 패키지 설치
+  2. `next.config.ts` 및 `src/app/page.tsx`의 레거시 experimental PPR 구문을 Next.js 16 표준 규격으로 갱신
+  3. `baseline-browser-mapping` 경고 제거를 위한 devDependencies 갱신
+- **Acceptance Criteria**:
+  - [x] `next` 및 `eslint-config-next` 버전이 `16.4.0`으로 설치된다.
+  - [x] `next.config.ts` 및 `src/app/page.tsx`에 오류 없는 최신 규격이 적용된다.
+
+---
+
+### [x] TICKET-602: 4단계 품질 검증 통과 및 프로젝트 문서 동기화
+
+- **우선순위**: P0
+- **선행 의존성**: TICKET-601
+- **목표**: Next.js 16 환경에서 포맷/린트/타입/빌드 4단계 검증을 무결점 통과하고 전체 문서를 Next.js 16 기준으로 일관되게 갱신
+- **상세 작업**:
+  1. `npm run format:check`, `npm run lint`, `npx tsc --noEmit`, `npm run build` 4단계 검증 통과
+  2. `README.md`, `docs/RULE.md`, `docs/ARCHITECTURE.md` 내의 Next.js 버전 및 아키텍처 설명 동기화
+- **Acceptance Criteria**:
+  - [x] 4단계 검증(Format, Lint, TSC, Build)이 에러 없이 100% 통과한다.
+  - [x] 문서 내 Next.js 버전 및 아키텍처 설명이 최신 16.4.0으로 일관되게 반영된다.

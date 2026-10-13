@@ -17,7 +17,7 @@
    - 모든 파일명은 케밥 케이스를 준수합니다 (예: `match-card.tsx`, `pandascore-api.ts`, `kst-date.ts`).
 3. **`any` 타입 엄격 금지 & `type` 별칭 우선**
    - `any`는 사용할 수 없으며, 불확실한 동적 데이터는 `unknown` + Zod 스키마 런타임 검증을 적용합니다.
-4. **Next.js 15 PPR & 5분 캐시 (`revalidate: 300`) 원칙**
+4. **Next.js 16 Cache Components (PPR) & 5분 캐시 (`revalidate: 300`) 원칙**
    - Server Component 기본, 민감한 API 호출 파일은 `import "server-only";`로 격리합니다.
    - 외부 PandaScore API는 5분 단위 Next.js Data Cache를 엄격히 적용합니다.
 5. **백로그 풀링 준수 및 4단계 검증 (사용자 요청 시에만 커밋 진행)**
@@ -35,7 +35,7 @@
 | :---------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **코드 작성 / 컴포넌트 구현 / 스타일링**        | 📐 **[docs/CONVENTIONS.md](./CONVENTIONS.md)**   | • 네이밍, 화살표 함수, Named Export<br>• Tailwind CSS, `cn()`, Lucide Icons, `next/image`<br>• Zod 스키마 검증, 4단계 검증 파이프라인, Git 커밋 규약     |
 | **시스템 구조 / PPR / 캐싱 / 데이터 흐름 파악** | 🏗️ **[docs/ARCHITECTURE.md](./ARCHITECTURE.md)** | • 시스템 아키텍처 다이어그램 (Mermaid)<br>• PPR Static Shell vs Dynamic Stream 분할<br>• 5분 캐시 계층, KST(UTC+9) 변환, 자동 스크롤 인터랙션            |
-| **다음 작업 티켓 가져오기 / 상태 업데이트**     | 📋 **[docs/BACKLOG.md](./BACKLOG.md)**           | • Phase 0~5 페이즈별 구현 티켓 목록<br>• 티켓 상태(`TODO` $\rightarrow$ `IN_PROGRESS` $\rightarrow$ `DONE`)<br>• 티켓별 상세 목표 및 Acceptance Criteria |
+| **다음 작업 티켓 가져오기 / 상태 업데이트**     | 📋 **[docs/BACKLOG.md](./BACKLOG.md)**           | • Phase 0~6 페이즈별 구현 티켓 목록<br>• 티켓 상태(`TODO` $\rightarrow$ `IN_PROGRESS` $\rightarrow$ `DONE`)<br>• 티켓별 상세 목표 및 Acceptance Criteria |
 | **프로젝트 실행 / 환경변수 / API 엔드포인트**   | 📖 **[README.md](../README.md)**                 | • 프로젝트 소개, 로컬 설치 및 실행 명령어<br>• PandaScore 공식 엔드포인트 및 토큰 설정 가이드                                                            |
 
 ---
