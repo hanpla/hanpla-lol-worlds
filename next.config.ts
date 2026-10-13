@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: "incremental",
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   images: {
     remotePatterns: [
       {

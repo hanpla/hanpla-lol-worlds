@@ -19,6 +19,12 @@ export const get2026WorldsMatches = async (): Promise<Match[]> => {
     throw new Error("PANDASCORE_API_TOKEN is not configured in environment variables");
   }
 
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      `[PandaScore API] Upstream fetch triggered (revalidate: 300s): ${PANDASCORE_MATCHES_API_URL}`,
+    );
+  }
+
   const response = await fetch(PANDASCORE_MATCHES_API_URL, {
     headers: {
       Authorization: `Bearer ${token}`,
