@@ -80,3 +80,18 @@ export const getMonthKst = (isoString: string): number => {
   const { month } = getKstDateParts(isoString);
   return month;
 };
+
+/**
+ * 게임 진행 시간(초)을 "분:초" 형식으로 포맷팅합니다.
+ *
+ * @param seconds 소요 시간 (초)
+ * @returns 포맷팅된 소요 시간 문자열 (예: "35분 42초" 또는 "-")
+ */
+export const formatGameDuration = (seconds?: number | null): string => {
+  if (seconds == null || seconds <= 0) {
+    return "-";
+  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}분 ${remainingSeconds.toString().padStart(2, "0")}초`;
+};

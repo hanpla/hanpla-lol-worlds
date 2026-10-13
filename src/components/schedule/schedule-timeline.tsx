@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { EmptyState } from "@/components/schedule/empty-state";
 import { TimelineSection } from "@/components/schedule/timeline-section";
 import { cn } from "@/lib/utils";
@@ -17,8 +18,11 @@ export const ScheduleTimeline = ({
   className,
   emptySlot,
 }: ScheduleTimelineProps) => {
-  // dateKey("YYYY-MM-DD") 기준으로 날짜 섹션 오름차순 정렬
-  const sortedSchedules = [...groupedSchedules].sort((a, b) => a.dateKey.localeCompare(b.dateKey));
+  // dateKey("YYYY-MM-DD") 기준으로 날짜 섹션 오름차순 정렬 (useMemo 캐싱)
+  const sortedSchedules = useMemo(
+    () => [...groupedSchedules].sort((a, b) => a.dateKey.localeCompare(b.dateKey)),
+    [groupedSchedules],
+  );
 
   // 일정이 존재하지 않는 경우 빈 상태 슬롯 또는 EmptyState 컴포넌트 렌더링
   if (sortedSchedules.length === 0) {
