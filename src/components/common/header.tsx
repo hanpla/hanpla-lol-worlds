@@ -22,7 +22,7 @@ export const Header = ({ className }: HeaderProps) => {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="group inline-flex items-center gap-2.5 transition-opacity hover:opacity-90"
+          className="group inline-flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           aria-label="2026 WORLDS 홈"
         >
           <div className="shadow-xs flex size-8 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">

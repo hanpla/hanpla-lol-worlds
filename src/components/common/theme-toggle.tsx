@@ -26,7 +26,7 @@ export const ThemeToggle = ({ className }: ThemeToggleProps) => {
       type="button"
       onClick={handleToggle}
       className={cn(
-        "relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card/80 text-foreground backdrop-blur-sm transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95",
+        "relative inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card/80 text-foreground backdrop-blur-sm transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 sm:size-10",
         className,
       )}
       aria-label="다크/라이트 테마 전환"

@@ -162,7 +162,7 @@ const CenterScoreDisplay = ({
   const showScores = (isFinished || isRunning) && score1 !== undefined && score2 !== undefined;
 
   return (
-    <div className="flex shrink-0 flex-col items-center justify-center px-2 sm:px-5">
+    <div className="flex shrink-0 flex-col items-center justify-center px-1.5 min-[360px]:px-2 sm:px-5">
       {showScores ? (
         <div className="flex items-center gap-1.5 text-xl font-black tabular-nums tracking-tight sm:gap-2 sm:text-2xl">
           <span className="sr-only">
@@ -268,8 +268,9 @@ export const MatchCard = ({
     <article
       id={`match-${match.id}`}
       onClick={onClick}
+      aria-label={`${stageLabel} ${opponent1?.name ?? "TBD"} 대 ${opponent2?.name ?? "TBD"} 경기`}
       className={cn(
-        "shadow-xs group relative overflow-hidden rounded-xl border border-border/70 bg-card/60 p-4 backdrop-blur-sm transition-all duration-200 hover:border-border hover:bg-card/80 hover:shadow-md sm:p-5",
+        "shadow-xs group relative overflow-hidden rounded-xl border border-border/70 bg-card/60 p-3.5 backdrop-blur-sm transition-all duration-200 hover:border-border hover:bg-card/80 hover:shadow-md min-[360px]:p-4 sm:p-5",
         shouldBeInteractive && "cursor-pointer hover:border-primary/40",
         className,
       )}

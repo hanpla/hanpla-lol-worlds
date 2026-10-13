@@ -107,7 +107,7 @@ export const ScheduleSkeleton = ({ className }: ScheduleSkeletonProps) => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl space-y-8 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto max-w-5xl space-y-8 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-16 lg:px-8">
         {SKELETON_SECTION_COUNTS.map((matchCount, groupIndex) => (
           <div key={`skeleton-group-${groupIndex}`} className="space-y-4">
             <DateHeaderSkeleton />

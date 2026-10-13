@@ -107,7 +107,7 @@ export const LckFilterToggle = ({
       disabled={disabled}
       onClick={handleClick}
       className={cn(
-        "focus-visible:outline-hidden group relative inline-flex min-h-[38px] min-w-[40px] items-center justify-between gap-2 rounded-xl border px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:min-h-[40px] sm:gap-2.5 sm:px-3 sm:py-2 sm:text-sm",
+        "group relative inline-flex min-h-[38px] min-w-[40px] items-center justify-between gap-1.5 rounded-xl border px-2 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] min-[360px]:gap-2 min-[360px]:px-2.5 sm:min-h-[40px] sm:gap-2.5 sm:px-3 sm:py-2 sm:text-sm",
         isLckOnly
           ? "shadow-xs border-primary/40 bg-primary/10 text-primary ring-1 ring-primary/20 dark:border-primary/50 dark:bg-primary/15"
           : "border-border/80 bg-background/80 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground",
@@ -115,9 +115,11 @@ export const LckFilterToggle = ({
         className,
       )}
     >
-      <div className="flex items-center gap-1.5 sm:gap-2">
+      <div className="flex items-center gap-1 sm:gap-2">
         <LckBadge isActive={isLckOnly} />
-        <span className="font-semibold tracking-tight">LCK 경기만</span>
+        <span className="whitespace-nowrap font-semibold tracking-tight">
+          LCK<span className="hidden min-[360px]:inline"> 경기만</span>
+        </span>
         {count !== undefined ? (
           <span
             className={cn(

@@ -67,7 +67,7 @@ const ResetActionButton = ({ onClick, label, className }: ResetActionButtonProps
       type="button"
       onClick={onClick}
       className={cn(
-        "shadow-xs focus-visible:outline-hidden group inline-flex items-center justify-center gap-2 rounded-lg border border-border/80 bg-background/90 px-4 py-2.5 text-xs font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.98] sm:text-sm",
+        "shadow-xs group inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-border/80 bg-background/90 px-4 py-2.5 text-xs font-semibold text-foreground transition-all duration-200 hover:border-primary/40 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] sm:text-sm",
         className,
       )}
     >

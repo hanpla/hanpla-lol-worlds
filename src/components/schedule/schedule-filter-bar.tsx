@@ -51,7 +51,7 @@ export const ScheduleFilterBar = ({
         className,
       )}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-1.5 px-3 py-2 sm:gap-4 sm:px-6 sm:py-2.5 lg:px-8">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-1 px-2.5 py-2 min-[360px]:gap-1.5 min-[360px]:px-3 sm:gap-4 sm:px-6 sm:py-2.5 lg:px-8">
         <div className="flex items-center justify-start">
           <MonthTabs selectedMonth={selectedMonth} onMonthChange={onMonthChange} />
         </div>

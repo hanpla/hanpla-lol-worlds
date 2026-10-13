@@ -76,7 +76,7 @@ const GameSetRow = ({ game, opponents }: GameSetRowProps) => {
   const hasDuration = Boolean(game.length && game.length > 0);
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg border border-border/60 bg-background/60 p-2.5 transition-colors hover:bg-background/90 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:p-3">
+    <div className="flex flex-col gap-2 rounded-lg border border-border/60 bg-background/60 p-2 transition-colors hover:bg-background/90 min-[360px]:p-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:p-3">
       {/* 좌측: 세트 번호 및 상태 배지 */}
       <div className="flex items-center gap-2">
         <span className="flex items-center justify-center rounded-md bg-muted px-2 py-0.5 text-xs font-bold tracking-tight text-foreground">
@@ -172,7 +172,7 @@ export const MatchAccordion = ({ match, defaultOpen = false, className }: MatchA
           aria-expanded={isOpen}
           aria-controls={`match-${match.id}-games-content`}
           className={cn(
-            "flex w-full items-center justify-between rounded-lg border border-border/40 bg-muted/30 px-3 py-2 text-xs font-semibold text-muted-foreground transition-all duration-200 hover:bg-muted/60 hover:text-foreground",
+            "flex min-h-[38px] w-full items-center justify-between rounded-lg border border-border/40 bg-muted/30 px-3 py-2 text-xs font-semibold text-muted-foreground transition-all duration-200 hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-h-[40px]",
             isOpen && "border-border/70 bg-muted/50 text-foreground",
           )}
         >

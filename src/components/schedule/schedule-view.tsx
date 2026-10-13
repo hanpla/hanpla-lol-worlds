@@ -58,8 +58,8 @@ export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
         lckCount={lckCount}
       />
 
-      {/* 2. 일정 타임라인 섹션 목록 (경기 없을 시 EmptyState 노출) */}
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      {/* 2. 일정 타임라인 섹션 목록 (경기 없을 시 EmptyState 노출, 플로팅 버튼 여백 확보) */}
+      <div className="mx-auto max-w-5xl px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-16 lg:px-8">
         <div className={cn("transition-opacity duration-200", isPending && "opacity-60")}>
           <ScheduleTimeline
             groupedSchedules={groupedSchedules}

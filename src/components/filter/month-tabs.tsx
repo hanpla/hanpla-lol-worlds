@@ -29,22 +29,31 @@ type MonthTabButtonProps = {
   month: number;
   isSelected: boolean;
   onClick: (month: number) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
   className?: string;
 };
 
 /**
  * 개별 월 탭 버튼 서브 컴포넌트 (DRY 원칙 준수)
  */
-const MonthTabButton = ({ month, isSelected, onClick, className }: MonthTabButtonProps) => {
+const MonthTabButton = ({
+  month,
+  isSelected,
+  onClick,
+  onKeyDown,
+  className,
+}: MonthTabButtonProps) => {
   return (
     <button
       type="button"
       role="tab"
+      tabIndex={isSelected ? 0 : -1}
       aria-selected={isSelected}
       aria-label={`${month}월 경기 일정 보기`}
       onClick={() => onClick(month)}
+      onKeyDown={onKeyDown}
       className={cn(
-        "focus-visible:outline-hidden relative flex min-h-[38px] min-w-[62px] items-center justify-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] sm:min-h-[40px] sm:min-w-[76px] sm:gap-1.5 sm:px-3.5 sm:py-2 sm:text-sm",
+        "relative flex min-h-[38px] min-w-[52px] items-center justify-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] min-[360px]:min-w-[62px] min-[360px]:px-2.5 sm:min-h-[40px] sm:min-w-[76px] sm:gap-1.5 sm:px-3.5 sm:py-2 sm:text-sm",
         isSelected
           ? "shadow-xs border border-primary/25 bg-background font-bold text-primary dark:border-primary/30 dark:bg-card dark:text-primary"
           : "border border-transparent font-medium text-muted-foreground hover:bg-background/50 hover:text-foreground",
@@ -79,6 +88,35 @@ export const MonthTabs = ({
   months = DEFAULT_WORLDS_MONTHS,
   className,
 }: MonthTabsProps) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, currentIndex: number) => {
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      nextIndex = (currentIndex + 1) % months.length;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      event.preventDefault();
+      nextIndex = (currentIndex - 1 + months.length) % months.length;
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      event.preventDefault();
+      nextIndex = months.length - 1;
+    } else {
+      return;
+    }
+
+    const nextMonth = months[nextIndex];
+    if (nextMonth !== undefined) {
+      onMonthChange(nextMonth);
+      const targetButton =
+        event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("[role='tab']")[
+          nextIndex
+        ];
+      targetButton?.focus();
+    }
+  };
+
   return (
     <div
       role="tablist"
@@ -88,12 +126,13 @@ export const MonthTabs = ({
         className,
       )}
     >
-      {months.map((month) => (
+      {months.map((month, index) => (
         <MonthTabButton
           key={month}
           month={month}
           isSelected={selectedMonth === month}
           onClick={onMonthChange}
+          onKeyDown={(event) => handleKeyDown(event, index)}
         />
       ))}
     </div>
