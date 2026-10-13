@@ -3,8 +3,6 @@ import { ScheduleSkeleton } from "@/components/schedule/schedule-skeleton";
 import { ScheduleView } from "@/components/schedule/schedule-view";
 import { get2026WorldsMatches } from "@/lib/api/pandascore-api";
 
-export const experimental_ppr = true;
-
 /**
  * 2026 롤드컵 경기 데이터를 비동기 페치하여 ScheduleView로 스트리밍 전달하는 비동기 서버 컴포넌트입니다.
  */

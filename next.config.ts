@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: "incremental",
-  },
+  cacheComponents: true,
+  partialPrefetching: true,
   logging: {
     fetches: {
       fullUrl: true,
