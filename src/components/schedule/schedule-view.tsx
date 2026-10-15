@@ -5,14 +5,19 @@ import { EmptyState } from "@/components/schedule/empty-state";
 import { ScheduleFilterBar } from "@/components/schedule/schedule-filter-bar";
 import { ScheduleTimeline } from "@/components/schedule/schedule-timeline";
 import { useScheduleFilter } from "@/hooks/use-schedule-filter";
+import { useWorldsMatches } from "@/hooks/use-worlds-matches";
 import { cn } from "@/lib/utils";
 import type { Match } from "@/types/pandascore";
 
 export type ScheduleViewProps = {
   /**
-   * 전체 롤드컵 경기 목록
+   * 서버 사이드에서 사전 페치된 초기 경기 목록 (SWR fallbackData로 사용)
    */
-  matches: readonly Match[];
+  initialMatches?: readonly Match[];
+  /**
+   * 하위 호환성을 위한 prop
+   */
+  matches?: readonly Match[];
   /**
    * 컨테이너 추가 클래스명
    */
@@ -21,9 +26,20 @@ export type ScheduleViewProps = {
 
 /**
  * 2026 롤드컵 전체 일정 조회 화면의 메인 뷰 클라이언트 컴포넌트입니다.
- * 필터 툴바 조작과 URL 쿼리 파라미터 동기화, 일정 타임라인 렌더링을 유기적으로 결합합니다.
+ * SWR(Stale-While-Revalidate) 전략을 적용하여 백그라운드 데이터 수신 시 새로고침 없이 즉각 UI를 갱신합니다.
  */
-export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
+export const ScheduleView = ({
+  initialMatches,
+  matches: legacyMatches,
+  className,
+}: ScheduleViewProps) => {
+  const fallback = initialMatches ?? legacyMatches ?? [];
+
+  // SWR 전략 기반 실시간 백그라운드 데이터 패칭 & UI 동기화
+  const { matches, isValidating, refresh } = useWorldsMatches({
+    initialMatches: fallback,
+  });
+
   const {
     selectedMonth,
     handleMonthChange,
@@ -49,13 +65,17 @@ export const ScheduleView = ({ matches, className }: ScheduleViewProps) => {
       {/* 0. 오늘/다음 경기 자동 스무스 스크롤 포커스 컨트롤러 */}
       <AutoScrollFocus matches={matches} />
 
-      {/* 1. 상단 월별 탭 & LCK 필터 툴바 (헤더 아래 고정 스티키 바) */}
+      {/* 1. 상단 월별 탭 & LCK 필터 & 실시간 동기화 툴바 (헤더 아래 고정 스티키 바) */}
       <ScheduleFilterBar
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
         isLckOnly={isLckOnly}
         onLckToggle={handleLckToggle}
         lckCount={lckCount}
+        isValidating={isValidating}
+        onRefresh={() => {
+          void refresh();
+        }}
       />
 
       {/* 2. 일정 타임라인 섹션 목록 (경기 없을 시 EmptyState 노출, 플로팅 버튼 여백 확보) */}
