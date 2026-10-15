@@ -405,3 +405,32 @@
 - **Acceptance Criteria**:
   - [x] 4단계 검증(Format, Lint, TSC, Build)이 에러 없이 100% 통과한다.
   - [x] 문서 내 Next.js 버전 및 아키텍처 설명이 최신 16.4.0으로 일관되게 반영된다.
+
+---
+
+## ⚡ Phase 7: SWR 기반 백그라운드 데이터 실시간 동기화 (SWR Real-time Background Sync)
+
+### [x] TICKET-701: Next.js 16 Server Action ("use cache") + SWR 하이브리드 실시간 동기화 구축
+
+- **우선순위**: P0
+- **선행 의존성**: TICKET-602
+- **목표**: 별도 REST API 라우트 없이 Next.js 16의 Server Action(`"use server"` + `"use cache"` + `cacheLife`)과 SWR을 결합하여, 새로고침 없이도 백그라운드 최신 경기 데이터가 UI에 즉시 반영되는 하이브리드 아키텍처 구축
+- **상세 작업**:
+  1. `swr` 공식 패키지 설치 (`npm i swr`)
+  2. `src/lib/api/pandascore-api.ts`를 Next.js 16 Server Action으로 전환:
+     - `"use server"` 및 `"use cache"` 지시어 적용
+     - 진행 중인 라이브 경기(`running`) 존재 시 `cacheLife({ stale: 30, revalidate: 60, expire: 300 })`, 평상시 `cacheLife({ stale: 300, expire: 600 })` 조건부 동적 서버 캐시 설정
+     - 불필요한 REST API 라우트(`/api/matches/route.ts`) 완전 제거
+  3. SWR 커스텀 훅 `src/hooks/use-worlds-matches.ts` 구현:
+     - `get2026WorldsMatches` Server Action을 SWR의 RPC fetcher로 직접 호출
+     - 서버 사전 페치 데이터를 `fallbackData`로 주입하여 초기 렌더링 시 깜빡임/CLS 완전 제거
+     - `revalidateOnFocus`, `revalidateOnReconnect`, 동적 폴링(`status === 'running'` 경기 존재 시 30초, 기본 60초) 설정
+  4. 메인 뷰 및 필터 컴포넌트 연동:
+     - `src/components/schedule/schedule-view.tsx`에서 SWR 훅 상태를 연결하여 백그라운드 변경 데이터 수신 시 `useScheduleFilter`를 통해 UI 즉시 재렌더링
+     - `src/components/schedule/schedule-filter-bar.tsx`에 백그라운드 동기화 스피너 및 원클릭 최신화 버튼(`isValidating`, `onRefresh`) 추가
+- **Acceptance Criteria**:
+  - [x] REST API 라우트 없이 Server Action과 SWR이 직접 결합되어 구동된다.
+  - [x] 페이지 새로고침(F5)을 하지 않아도 백그라운드에서 최신 매치 데이터가 넘어오면 즉각 UI가 반영된다.
+  - [x] 서버 렌더링된 초기 데이터(fallbackData)가 즉시 표시되어 초기 로딩 지연이 발생하지 않는다.
+  - [x] 필터 바의 동기화 버튼 클릭 시 애니메이션과 함께 백그라운드 재검증이 수행된다.
+  - [x] 4단계 품질 검증(포맷, 린트, 타입, 빌드)을 100% 무결점으로 통과한다.

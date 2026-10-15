@@ -11,6 +11,8 @@ flowchart TD
     subgraph ClientBrowser ["클라이언트 브라우저 (User)"]
         UI["UI View (DOM)"]
         URL["URL Query Params (?month=10&lck=true)"]
+        SWR["useWorldsMatches (SWR Client Hook)"]
+        SyncBtn["Sync/Refresh Button (isValidating)"]
         ScrollController["AutoScrollFocus Controller"]
         FAB["Floating Scroll Buttons (Top/Bottom)"]
     end
@@ -25,13 +27,13 @@ flowchart TD
 
         subgraph DynamicStream ["Dynamic Stream (Suspense 경계)"]
             SuspenseBoundary["<Suspense fallback={...}>"]
-            ScheduleRSC["ScheduleTimeline (Server Component)"]
+            ScheduleRSC["ScheduleStream (Server Component)"]
         end
 
-        subgraph DataCacheLayer ["Next.js Data Cache (5분 캐시)"]
-            Fetcher["PandaScore Fetcher (server-only, revalidate: 300)"]
+        subgraph ServerActionLayer ["Next.js 16 Server Action ('use server' + 'use cache')"]
+            ServerAction["get2026WorldsMatches (Dynamic cacheLife)"]
             ZodValidator["Zod Runtime Schema Validation"]
-            MemoryCache[("Next.js Data Cache")]
+            MemoryCache[("Next.js 16 Cache Components")]
         end
     end
 
@@ -44,11 +46,14 @@ flowchart TD
     Header --> TabsContainer
     SuspenseBoundary --> Skeleton
     SuspenseBoundary --> ScheduleRSC
-    ScheduleRSC --> Fetcher
-    Fetcher --> MemoryCache
-    MemoryCache -- "5분 만료 시에만 호출" --> PandaAPI
+    ScheduleRSC --> ServerAction
+    ScheduleRSC -. "초기 데이터 (fallbackData)" .-> SWR
+    SWR --> UI
+    SWR -- "Server Action RPC 직접 호출 (revalidateOnFocus & 폴링)" --> ServerAction
+    SyncBtn -- "수동 최신화 (mutate)" --> SWR
+    ServerAction --> MemoryCache
+    MemoryCache -- "cacheLife 만료 시에만 호출" --> PandaAPI
     PandaAPI --> ZodValidator
-    ScheduleRSC -. "스트리밍 결합" .-> UI
     ScrollController -. "경기 감지 후 Smooth Scroll" .-> UI
     FAB -. "Window scrollTo" .-> UI
 ```
@@ -71,18 +76,21 @@ flowchart TD
 
 ---
 
-## 3. 데이터 페칭, 보안 및 5분 스마트 캐싱 전략
+## 3. 데이터 페칭, 보안 및 스마트 캐싱 전략
 
-### 3.1 Server-Only 격리 및 런타임 Zod 검증 (`@/lib/api/pandascore-api.ts`)
+### 3.1 Next.js 16 Server Action & Cache Components (`"use server"` + `"use cache"`)
 
-PandaScore API 호출은 `import "server-only";`로 클라이언트 번들 유출이 원천 차단되며, `const` 화살표 함수와 Zod 스키마를 통해 안전하게 파싱됩니다.
+PandaScore API 호출은 `"use server";` 파일에서 실행되어 클라이언트 번들로 토큰 유출이 원천 차단되며, Next.js 16의 최신 `"use cache"` 및 `cacheLife`를 통해 조건부 수명이 동적으로 제어됩니다.
 
 ```typescript
-import "server-only";
-import { z } from "zod";
+"use server";
+
+import { cacheLife } from "next/cache";
 import { matchesResponseSchema, type Match } from "@/types/pandascore";
 
 export const get2026WorldsMatches = async (): Promise<Match[]> => {
+  "use cache";
+
   const token = process.env.PANDASCORE_API_TOKEN;
   if (!token) {
     throw new Error("PANDASCORE_API_TOKEN is not configured in environment variables");
@@ -94,10 +102,6 @@ export const get2026WorldsMatches = async (): Promise<Match[]> => {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
-      },
-      next: {
-        revalidate: 300, // 5분 (300초) 캐싱
-        tags: ["worlds-matches-2026"],
       },
     },
   );
@@ -114,14 +118,44 @@ export const get2026WorldsMatches = async (): Promise<Match[]> => {
     throw new Error("Invalid match data format received from PandaScore API");
   }
 
-  return parsed.data;
+  const matches = parsed.data;
+
+  // 진행 중인 라이브 경기 존재 여부에 따라 서버 캐시 수명(cacheLife) 동적 제어
+  const hasRunningMatch = matches.some((m) => m.status === "running");
+  if (hasRunningMatch) {
+    cacheLife({
+      stale: 30, // 30초 단기 캐시
+      revalidate: 60, // 60초
+      expire: 300, // 5분
+    });
+  } else {
+    cacheLife({
+      stale: 300, // 5분 캐시
+      expire: 600, // 최대 10분
+    });
+  }
+
+  return matches;
 };
 ```
 
 ### 3.2 트래픽 방어 및 보안 원칙
 
-- **트래픽 스파이크 방어**: 수만 명의 사용자가 동시에 사이트에 접속하더라도, Next.js Data Cache 계층에서 5분 동안 동일한 응답을 반환하므로 PandaScore 외부 API 요청은 최대 5분에 1회만 발생합니다.
+- **트래픽 스파이크 방어**: 수만 명의 사용자가 동시에 사이트에 접속하더라도, Next.js 16 Cache Components 계층에서 설정된 수명(`cacheLife`) 동안 동일한 응답을 반환하므로 PandaScore 외부 API 요청은 과도하게 발생하지 않습니다.
 - **토큰 은닉**: `PANDASCORE_API_TOKEN`은 오직 서버 환경에서만 참조되며, 클라이언트 번들에 노출되지 않아 토큰 탈취 위험이 없습니다.
+
+### 3.3 Server Action + SWR 하이브리드 실시간 동기화 아키텍처
+
+별도의 REST API 라우트 보일러플레이트(`/api/matches/route.ts`) 없이, Next.js 16 Server Action과 SWR을 결합하여 최상의 개발 생산성과 브라우저 UX를 달성했습니다.
+
+1. **Zero REST Boilerplate**: 클라이언트 훅(`useWorldsMatches`)이 Server Action(`get2026WorldsMatches`)을 RPC fetcher로 직접 호출합니다.
+2. **Zero-CLS 초기 렌더링**: 서버 컴포넌트(`ScheduleStream`)에서 사전에 페치한 경기 데이터를 SWR의 `fallbackData`로 제공하여 깜빡임 없이 즉각 완전한 화면을 렌더링합니다.
+3. **스마트 브라우저 라이프사이클 관리**:
+   - `revalidateOnFocus`: 사용자가 다른 탭이나 프로그램을 보다가 브라우저 탭으로 복귀할 때 백그라운드에서 즉시 최신화합니다.
+   - `revalidateOnReconnect`: 네트워크 복구 시 최신 경기 데이터를 재검증합니다.
+   - `pauseWhenHidden`: 브라우저 탭이 백그라운드에 있을 때는 불필요한 폴링을 자동으로 일시 정지하여 사용자 기기의 배터리와 데이터를 보호합니다.
+4. **동적 라이브 폴링**:
+   - 라이브 경기(`running`) 진행 시 30초, 평상시에는 60초 간격으로 백그라운드 자동 폴링을 수행합니다.
 
 ---
 
